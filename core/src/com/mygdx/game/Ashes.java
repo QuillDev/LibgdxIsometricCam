@@ -20,6 +20,5 @@ public class Ashes extends ApplicationAdapter {
 
     @Override
     public void dispose(){
-        gameManager.dispose();
     }
 }

@@ -1,19 +1,20 @@
 package com.mygdx.game.GameState;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.mygdx.game.Camera.CameraController;
+import com.mygdx.game.Player.ClientPlayer;
 import com.mygdx.game.Player.PlayerManager;
-
-import java.awt.event.KeyEvent;
 
 public class InputHandler implements InputProcessor {
 
-    private CameraController cameraController = new CameraController();
+    private CameraController cameraController = CameraController.getInstance();
     private PlayerManager playerManager = PlayerManager.getInstance();
 
     @Override
     public boolean keyDown(int keycode) {
-        playerManager.processKeyDown(keycode);
+        playerManager.processKeyDown();
         return false;
     }
 
@@ -41,7 +42,10 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        cameraController.moveCamOnDrag(screenX, screenY);
+
+        //if the camera is locked then we enable the moveCamOnDrag function
+        if(!cameraController.getLocked()){ cameraController.moveCamOnDrag(screenX, screenY); }
+
         return false;
     }
 

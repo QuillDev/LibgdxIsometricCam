@@ -11,30 +11,57 @@
   <image width="100" height="65" source="../foresttiles/grass.png"/>
  </tile>
  <tile id="3">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="64" source="../foresttiles/water.png"/>
  </tile>
  <tile id="4">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="65" source="../foresttiles/waterCornerEast.png"/>
  </tile>
  <tile id="5">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="64" source="../foresttiles/waterCornerNorth.png"/>
  </tile>
  <tile id="6">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="66" source="../foresttiles/waterCornerSouth.png"/>
  </tile>
  <tile id="7">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="65" source="../foresttiles/waterCornerWest.png"/>
  </tile>
  <tile id="8">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="63" source="../foresttiles/waterEast.png"/>
  </tile>
  <tile id="9">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="63" source="../foresttiles/waterNorth.png"/>
  </tile>
  <tile id="10">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="65" source="../foresttiles/waterSouth.png"/>
  </tile>
  <tile id="11">
+  <properties>
+   <property name="fishable" value="true"/>
+  </properties>
   <image width="100" height="65" source="../foresttiles/waterWest.png"/>
  </tile>
 </tileset>

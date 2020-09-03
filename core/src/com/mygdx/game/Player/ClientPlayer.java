@@ -1,22 +1,23 @@
 package com.mygdx.game.Player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 
-public class Player {
+public class ClientPlayer {
 
-    private Texture playerTexture;
+    private static ClientPlayer clientPlayer = new ClientPlayer();
+
     private Sprite playerSprite;
     private float deltaX;
     private float deltaY;
 
     /**
-     * Constructor for players
-     * @param playerTexture the texture of the player
+     * Constructor for the client player
      */
-    public Player(Texture playerTexture) {
-        this.playerTexture = playerTexture;
-        this.playerSprite = new Sprite(playerTexture);
+    private ClientPlayer() {
         this.deltaX = 0f;
         this.deltaY = 0f;
     }
@@ -39,8 +40,22 @@ public class Player {
         float x = playerSprite.getX();
         float y = playerSprite.getY();
 
-        playerSprite.setPosition(x + deltaX, y + deltaY);
+        float newX = x + deltaX;
+        float newY = y + deltaY;
 
+        //If your y is twice ur x, dat bad
+        if(newY > newX * .5f){ return; };
+
+        playerSprite.setPosition(newX, newY);
+    }
+
+    /**
+     * Render the sprite in the batch
+     * @param batch the batch to render with
+     */
+    public void render(Batch batch) {
+        updatePosition();
+        playerSprite.draw(batch);
     }
     /**
      * Get the player's sprite
@@ -64,5 +79,16 @@ public class Player {
 
     public void setDeltaY(float deltaY) {
         this.deltaY = deltaY;
+    }
+
+    /**
+     * Set teh
+     */
+    public void setPlayerSprite(Sprite sprite){
+        this.playerSprite = sprite;
+    }
+
+    public static ClientPlayer getInstance(){
+        return clientPlayer;
     }
 }

@@ -1,17 +1,21 @@
 package com.mygdx.game.Camera;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.mygdx.game.GameState.GameManager;
+import com.mygdx.game.Player.ClientPlayer;
 
 public class CameraController {
 
     //get an instance of the game manager
     private GameManager gameManager = GameManager.getInstance();
     private OrthographicCamera cam = gameManager.getCamera();
+    private static CameraController cameraController = new CameraController();
 
     //Vectors for calculating camera position
     private final Vector3 currentPosition = new Vector3();
@@ -26,6 +30,17 @@ public class CameraController {
     private final float maxZoom = .5f;
     private final float minZoom = 5.5f;
 
+    //whether camera is locked
+    private boolean locked = true;
+
+    //Make the camera controller private
+    private CameraController(){}
+
+    /**
+     * Move the camera when you drag the cursor
+     * @param x the x from the cursor
+     * @param y the y form the cursor
+     */
     public void moveCamOnDrag (int x, int y) {
         Ray pickRay = cam.getPickRay(x, y);
         Intersector.intersectRayPlane(pickRay, zPlane, currentPosition);
@@ -80,4 +95,39 @@ public class CameraController {
         return (!(lastPosition.x == -1 && lastPosition.y == -1 && lastPosition.z == -1));
     }
 
+    /**
+     * Set locked to true or false
+     * @param locked whether to lock camera
+     */
+    public void setLocked(boolean locked){
+        this.locked = locked;
+    }
+
+    /**
+     * Get whether the cam is locked
+     * @return whether the cam is locked
+     */
+    public boolean getLocked() {
+        return locked;
+    }
+
+    /**
+     * Lock the camera to the player if locked is true
+     * @param player the client player to lock the camera to
+     */
+    public void lockToPlayer(ClientPlayer player){
+        Sprite characterSprite = player.getPlayerSprite();
+        float x = characterSprite.getX() + characterSprite.getWidth() / 2f;
+        float y = characterSprite.getY() + characterSprite.getHeight() / 2f;
+        cam.position.x = x;
+        cam.position.y = y;
+    }
+
+    /**
+     * Get an instance of the camera controller
+     * @return the camera controller instance
+     */
+    public static CameraController getInstance(){
+        return cameraController;
+    }
 }
