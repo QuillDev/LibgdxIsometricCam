@@ -1,10 +1,12 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.mygdx.game.GameState.GameManager;
 
-public class MyGdxGame extends ApplicationAdapter {
+public class Ashes extends ApplicationAdapter {
 
-    private GameManager gameManager = new GameManager();
+    private GameManager gameManager = GameManager.getInstance();
+
 
     @Override
     public void create(){

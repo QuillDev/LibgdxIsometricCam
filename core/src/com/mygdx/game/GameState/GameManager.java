@@ -1,17 +1,27 @@
-package com.mygdx.game;
+package com.mygdx.game.GameState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.mygdx.game.Player.Player;
+import com.mygdx.game.Player.PlayerManager;
 
 public class GameManager {
+
+    //Create the sole instance
+    private final static GameManager gameManager = new GameManager();
+    private final PlayerManager playerManager = PlayerManager.getInstance();
+
+    private GameManager(){}
 
     //Assets Manager
     private AssetManager manager;
@@ -29,9 +39,12 @@ public class GameManager {
     private IsometricTiledMapRenderer renderer;
 
 
-
     public void create() {
         this.manager = new AssetManager();
+
+        //Create a player
+        Player player = new Player(new Texture(Gdx.files.internal("tiles/dev/devball.png")));
+        playerManager.registerPlayer(player);
 
         //setup the manager
         setupManager();
@@ -55,6 +68,9 @@ public class GameManager {
 
         //create a renderer for the map object
         this.renderer = new IsometricTiledMapRenderer(map);
+
+        //set the input processor
+        Gdx.input.setInputProcessor(new InputHandler());
     }
 
     //TODO Export this to a render file
@@ -67,13 +83,22 @@ public class GameManager {
         camera.update();
         renderer.setView(camera);
 
-        //render
-        renderer.render(decorationLayerIndices);
-        renderer.getBatch().begin();
+        Batch batch = renderer.getBatch();
+
+        //Render the base
+        batch.begin();
+        //player.getPlayerSprite().draw(renderer.getBatch());
         renderer.renderTileLayer(terrainLayer);
-        renderer.getBatch().end();
+        playerManager.renderAllPlayers(batch);
+        batch.end();
+
+        //Render any post decorations
+        renderer.render(decorationLayerIndices);
     }
 
+    /**
+     * Dispose of the crap resources
+     */
     public void dispose(){
 
         //free resources
@@ -100,15 +125,37 @@ public class GameManager {
         mapWidthInTiles = mapProperties.get("width", Integer.class);
         mapHeightInTiles = mapProperties.get("height", Integer.class);
         mapWidthInPixels = mapWidthInTiles * tileWidth;
-        mapHeightInTiles = mapHeightInTiles * tileHeight;
+        mapHeightInPixels = mapHeightInTiles * tileHeight;
     }
+
 
     /**
      * Setup the camera
      */
     private void setupCamera(){
         //start cam in the middle of the map
-        camera.position.x = mapHeightInPixels * .5f;
+        camera.position.x = mapWidthInPixels  * .5f;
         camera.position.y = mapHeightInPixels * .5f;
+    }
+
+
+    /**
+     * GETTERS
+     */
+
+    /**
+     * Get the camera
+     * @return the camera
+     */
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    /**
+     * Get an instance of the game manager
+     * @return the game manager
+     */
+    public static GameManager getInstance(){
+        return gameManager;
     }
 }
